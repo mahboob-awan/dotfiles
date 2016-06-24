@@ -2,8 +2,8 @@
 export DOTFILES=~/.dotfiles
 
 # Add binaries into the path
-PATH=$DOTFILES/bin:$PATH
-export PATH
+export PATH=$DOTFILES/bin:$PATH:/mnt/netset/bin
+
 
 # Source all files in "source"
 function src() {
@@ -23,3 +23,6 @@ function dotfiles() {
 }
 
 src
+
+export NVM_DIR="/home/awan/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
