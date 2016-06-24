@@ -1,0 +1,60 @@
+#!/bin/bash
+
+function usage()
+{
+echo "Usage: git review [-d] [-r remote] [[-a] | BASE_BRANCH]"
+echo "Options:"
+echo " -a"
+echo " Automatically determine base branch from topic"
+echo " branch name using pattern:"
+echo " baseBranch_taskId_descriptionOfBranch"
+echo " -d"
+echo " upload as draft"
+echo " -h"
+echo " display this help"
+echo " -r remote"
+echo " uploads to specified remote. Default is 'gerrit'"
+}
+
+function setBase()
+{
+if [ "$base" == "" ]
+then
+base=$1
+fi
+}
+ echo $(git rev-parse --abbrev-ref HEAD)
+
+base=""
+mode="publish"
+remote="gerrit"
+branch=$(git rev-parse --abbrev-ref HEAD)
+# For backward compability
+source ~/.git-review.conf 2>/dev/null
+
+while [ "$1" != "" ]
+do
+case $1 in
+-a) setBase $(echo ${branch} | sed 's/^\(.*\)_[0-9]\{5\}.*$/\1/')
+;;
+-d) mode="drafts"
+;;
+-h) usage
+exit 2
+;;
+-r) shift
+remote=$1
+;;
+*) setBase $1
+;;
+esac
+shift
+done
+
+if [ "$base" == "" ]
+then
+usage
+exit 2
+fi
+echo ${remote} HEAD:refs/${mode}/${base}/${branch}
+git push ${remote} HEAD:refs/${mode}/${base}/${branch}
