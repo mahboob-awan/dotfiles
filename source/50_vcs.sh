@@ -34,6 +34,7 @@ alias gbs='git branch | perl -ne '"'"'/^\* (?:\(detached from (.*)\)|(.*))/ && p
 alias gu-all='eachdir git pull'
 alias gp-all='eachdir git push'
 alias gs-all='eachdir git status'
+alias gf-all='eachdir git fetch'
 
 # open all changed files (that still actually exist) in the editor
 function ged() {
